@@ -10,7 +10,7 @@ pub struct BlockHeader {
     version: u32,
     prev_block_hash: Vec<u8>,
     merkle_root: Vec<u8>,
-    // timestamp: u64,
+    timestamp: u64,
     nonce: u64,
 }
 
@@ -25,7 +25,7 @@ impl Block {
             version: 1,
             prev_block_hash,
             merkle_root: merkle_tree.root_hash().to_vec(),
-            // timestamp: current_timestamp(),
+            timestamp: Self::current_timestamp(),
             nonce: 0,
         };
         
@@ -55,7 +55,7 @@ impl Block {
         // Add merkle root
         buffer.extend_from_slice(&self.header.merkle_root);
         // Add timestamp
-        // buffer.extend_from_slice(&self.header.timestamp.to_le_bytes());
+        buffer.extend_from_slice(&self.header.timestamp.to_le_bytes());
         // Add nonce
         buffer.extend_from_slice(&self.header.nonce.to_le_bytes());
         
@@ -102,9 +102,9 @@ impl Block {
         &self.header.prev_block_hash
     }
     
-    // pub fn timestamp(&self) -> u64 {
-    //     self.header.timestamp
-    // }
+    pub fn timestamp(&self) -> u64 {
+        self.header.timestamp
+    }
     
     pub fn nonce(&self) -> u64 {
         self.header.nonce
